@@ -21,15 +21,8 @@ export function Footer() {
             confidence
           </p>
           <p className="text-muted-foreground text-xs">
-            &copy; {year}. Built with love using{" "}
-            <a
-              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${hostname}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline transition-colors duration-200"
-            >
-              caffeine.ai
-            </a>
+            &copy; {year}. {" "}
+          
           </p>
         </div>
       </div>
