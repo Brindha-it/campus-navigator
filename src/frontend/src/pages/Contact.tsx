@@ -6,35 +6,91 @@ const CONTACT_INFO = [
   {
     icon: MapPin,
     label: "Address",
-    value: "University Campus, Main Gate Road, City – 000001",
+    value:
+      "Old, Nagore Main Rd, Thethi village, Nagore, Nagapattinam, Tamil Nadu 611002",
   },
-  { icon: Mail, label: "Email", value: "campusnav@university.edu" },
+  { icon: Mail, label: "Email", value: "egspec@gmail.com" },
   { icon: Phone, label: "Phone", value: "+91 98765 43210" },
 ];
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
   const [submitted, setSubmitted] = useState(false);
+
   const [errors, setErrors] = useState<Partial<typeof form>>({});
 
   const validate = () => {
     const e: Partial<typeof form> = {};
-    if (!form.name.trim()) e.name = "Name is required.";
-    if (!form.email.trim()) e.email = "Email is required.";
-    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = "Enter a valid email.";
-    if (!form.message.trim()) e.message = "Message is required.";
+
+    if (!form.name.trim()) {
+      e.name = "Name is required.";
+    }
+
+    if (!form.email.trim()) {
+      e.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      e.email = "Enter a valid email.";
+    }
+
+    if (!form.message.trim()) {
+      e.message = "Message is required.";
+    }
+
     return e;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  // EMAIL SEND FUNCTION
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     const errs = validate();
+
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
     }
+
     setErrors({});
-    setSubmitted(true);
+
+    try {
+      const response = await fetch(
+        "https://api.web3forms.com/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            access_key: "9f91916d-4767-4506-8b00-c8cd62607295",
+            name: form.name,
+            email: form.email,
+            message: form.message,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+
+        setForm({
+          name: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send message");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong");
+    }
   };
 
   return (
@@ -43,7 +99,11 @@ export default function Contact() {
       <section className="bg-card border-b border-border py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center space-y-3">
           <p className="text-label text-accent">Get in Touch</p>
-          <h1 className="text-h2 font-display text-foreground">Contact Us</h1>
+
+          <h1 className="text-h2 font-display text-foreground">
+            Contact Us
+          </h1>
+
           <p className="text-muted-foreground text-sm leading-relaxed">
             Have a question about the Campus Navigation System? Found a missing
             building or incorrect path? We'd love to hear from you.
@@ -58,17 +118,22 @@ export default function Contact() {
             <h2 className="text-h3 font-display text-foreground">
               Campus Info
             </h2>
+
             <div className="space-y-4">
               {CONTACT_INFO.map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-start gap-3">
                   <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                     <Icon className="w-4 h-4 text-primary" />
                   </div>
+
                   <div>
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                       {label}
                     </p>
-                    <p className="text-sm text-foreground mt-0.5">{value}</p>
+
+                    <p className="text-sm text-foreground mt-0.5">
+                      {value}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -85,19 +150,27 @@ export default function Contact() {
                 <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center">
                   <CheckCircle2 className="w-7 h-7 text-accent" />
                 </div>
+
                 <h3 className="font-display font-semibold text-lg text-foreground">
                   Message Sent!
                 </h3>
+
                 <p className="text-muted-foreground text-sm max-w-xs">
                   Thank you for reaching out. We'll get back to you within 1–2
                   business days.
                 </p>
+
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={() => {
                     setSubmitted(false);
-                    setForm({ name: "", email: "", message: "" });
+
+                    setForm({
+                      name: "",
+                      email: "",
+                      message: "",
+                    });
                   }}
                   data-ocid="contact.send_another_button"
                 >
@@ -118,17 +191,22 @@ export default function Contact() {
                   >
                     Full Name
                   </label>
+
                   <input
                     id="name"
                     type="text"
                     placeholder="Your full name"
                     value={form.name}
                     onChange={(e) =>
-                      setForm((f) => ({ ...f, name: e.target.value }))
+                      setForm((f) => ({
+                        ...f,
+                        name: e.target.value,
+                      }))
                     }
                     className="w-full bg-card border border-input rounded-lg px-4 py-2.5 text-sm text-foreground transition-smooth focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary placeholder:text-muted-foreground"
                     data-ocid="contact.name_input"
                   />
+
                   {errors.name && (
                     <p
                       className="text-xs text-destructive"
@@ -138,6 +216,7 @@ export default function Contact() {
                     </p>
                   )}
                 </div>
+
                 <div className="space-y-1.5">
                   <label
                     htmlFor="email"
@@ -145,17 +224,22 @@ export default function Contact() {
                   >
                     Email Address
                   </label>
+
                   <input
                     id="email"
                     type="email"
                     placeholder="you@university.edu"
                     value={form.email}
                     onChange={(e) =>
-                      setForm((f) => ({ ...f, email: e.target.value }))
+                      setForm((f) => ({
+                        ...f,
+                        email: e.target.value,
+                      }))
                     }
                     className="w-full bg-card border border-input rounded-lg px-4 py-2.5 text-sm text-foreground transition-smooth focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary placeholder:text-muted-foreground"
                     data-ocid="contact.email_input"
                   />
+
                   {errors.email && (
                     <p
                       className="text-xs text-destructive"
@@ -165,6 +249,7 @@ export default function Contact() {
                     </p>
                   )}
                 </div>
+
                 <div className="space-y-1.5">
                   <label
                     htmlFor="message"
@@ -172,17 +257,22 @@ export default function Contact() {
                   >
                     Message
                   </label>
+
                   <textarea
                     id="message"
                     rows={5}
                     placeholder="Describe your query or feedback..."
                     value={form.message}
                     onChange={(e) =>
-                      setForm((f) => ({ ...f, message: e.target.value }))
+                      setForm((f) => ({
+                        ...f,
+                        message: e.target.value,
+                      }))
                     }
                     className="w-full bg-card border border-input rounded-lg px-4 py-2.5 text-sm text-foreground transition-smooth focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary placeholder:text-muted-foreground resize-none"
                     data-ocid="contact.message_textarea"
                   />
+
                   {errors.message && (
                     <p
                       className="text-xs text-destructive"
@@ -192,6 +282,7 @@ export default function Contact() {
                     </p>
                   )}
                 </div>
+
                 <Button
                   type="submit"
                   variant="primary"
@@ -208,13 +299,13 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Map accent section */}
+      {/* Footer */}
       <section className="bg-muted/40 border-t border-border py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center text-sm text-muted-foreground">
-          This project was developed as part of the Final Year Computer Science
+          This project was developed as part of the Third year Mini project
           curriculum at{" "}
           <span className="font-semibold text-foreground">
-            University Campus
+            College Campus
           </span>
           . All routing data is for demonstration purposes.
         </div>
