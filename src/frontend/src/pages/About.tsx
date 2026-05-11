@@ -2,39 +2,36 @@ import { BookOpen, Code2, GraduationCap, Lightbulb } from "lucide-react";
 
 const TEAM = [
   {
-    name: "Dr. A. Ramesh",
-    role: "Project Mentor",
-    dept: "Dept. of Computer Science",
+    name: "Dr.G.Arulselvan HOD/IT",
+    dept: "Department of Information technology",
   },
   {
-    name: "Priya Sharma",
-    role: "Frontend Developer",
-    dept: "Final Year, B.Tech CSE",
+    name: "Ms.R.Brindha",
+    dept: "Third Year, B.Tech IT",
   },
   {
-    name: "Karan Mehta",
-    role: "Algorithm Engineer",
-    dept: "Final Year, B.Tech CSE",
+    name: "Ms. R.AbinayaHarini",
+    dept: "Third Year, B.Tech IT",
   },
   {
-    name: "Sneha Iyer",
-    role: "UI/UX Designer",
-    dept: "Final Year, B.Tech CSE",
+    name: "Ms. C.Banu",
+    dept: "Third Year, B.Tech IT",
   },
+ 
 ];
 
 const TECH = [
   {
     icon: Code2,
     label: "Frontend",
-    value: "React 19 + TypeScript + Tailwind CSS",
+    value: "React.js + Vite + Tailwind CSS",
   },
   { icon: BookOpen, label: "Routing", value: "TanStack Router" },
   { icon: Lightbulb, label: "Algorithm", value: "Dijkstra's Shortest Path" },
   {
     icon: GraduationCap,
     label: "Backend",
-    value: "Motoko on Internet Computer",
+    value: "Express.js",
   },
 ];
 
@@ -49,7 +46,7 @@ export default function About() {
             Built for the campus community
           </h1>
           <p className="text-muted-foreground leading-relaxed">
-            Campus Navigation System is a final-year academic project developed
+            Campus Navigation System is a Path/Route finding project developed
             to solve a real problem: students and visitors struggling to locate
             buildings across a sprawling campus. We leverage Dijkstra's graph
             algorithm to compute the shortest walking paths between any two
@@ -90,10 +87,10 @@ export default function About() {
       <section className="bg-muted/40 border-t border-border py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-h3 font-display text-foreground mb-8 text-center">
-            Our Team
+            Our Team Members
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {TEAM.map(({ name, role, dept }, i) => (
+            {TEAM.map(({ name,  dept }, i) => (
               <div
                 key={name}
                 className="surface-card p-5 text-center space-y-2"
@@ -105,8 +102,7 @@ export default function About() {
                 <p className="font-display font-semibold text-foreground text-sm">
                   {name}
                 </p>
-                <p className="text-accent text-xs font-semibold">{role}</p>
-                <p className="text-muted-foreground text-xs">{dept}</p>
+              <p className="text-muted-foreground text-xs">{dept}</p>
               </div>
             ))}
           </div>
